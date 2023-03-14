@@ -1,1 +1,1 @@
-export * from './data-puddle-mock-crm-stack';
+export * from './crm-stack';

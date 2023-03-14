@@ -1,6 +1,6 @@
 import { App } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { DataPuddleMockCrmStack } from '../src';
+import { CrmStack } from '../src';
 
 export class TestApp extends App {
   constructor() {
@@ -13,7 +13,7 @@ export class TestApp extends App {
   }
 }
 
-export class TestDataPuddleMockCrmStack extends DataPuddleMockCrmStack {
+export class TestDataPuddleMockCrmStack extends CrmStack {
   constructor(scope: Construct, id: string) {
     super(scope, id, { });
   }

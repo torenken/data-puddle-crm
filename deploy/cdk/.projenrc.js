@@ -15,7 +15,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
   context: {
     '@aws-cdk/core:newStyleStackSynthesis': true,
   },
-  appEntrypoint: `${appName}-app.ts`,
+  appEntrypoint: 'mock-env-app.ts',
 
   jestOptions: {
     jestVersion: '28',
