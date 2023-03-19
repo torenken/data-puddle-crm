@@ -194,7 +194,7 @@ Object {
             "Ref": "CrmTechnicalNotificationD254254E",
           },
         ],
-        "AlarmName": "RiskApiMetrics4xAlarm",
+        "AlarmName": "CrmApiMetrics4xAlarm",
         "ComparisonOperator": "GreaterThanOrEqualToThreshold",
         "Dimensions": Array [
           Object {
@@ -314,7 +314,8 @@ Object {
             "DataTraceEnabled": false,
             "HttpMethod": "*",
             "ResourcePath": "/*",
-            "ThrottlingRateLimit": 3,
+            "ThrottlingBurstLimit": 5,
+            "ThrottlingRateLimit": 10,
           },
         ],
         "RestApiId": Object {
@@ -459,6 +460,7 @@ Object {
     },
     "CrmEndpointProvideDataUrlFunc0C71F3BE": Object {
       "DependsOn": Array [
+        "CrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy2FCE8FA3",
         "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B",
       ],
       "Properties": Object {
@@ -544,6 +546,52 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "CrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy2FCE8FA3": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CrmDataBucket00CB6587",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "CrmDataBucket00CB6587",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "CrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy2FCE8FA3",
+        "Roles": Array [
+          Object {
+            "Ref": "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
     "CrmTechnicalNotificationD254254E": Object {
       "Type": "AWS::SNS::Topic",

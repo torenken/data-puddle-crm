@@ -28,6 +28,7 @@ export class CrmEndpoint extends Construct {
         DATA_BUCKET_NAME: props.dataBucket.bucketName,
       },
     });
+    props.dataBucket.grantRead(provideDataUrlFunc);
 
     const storeResource = crmApi.root.addResource('store');
     storeResource.addMethod('GET', new LambdaIntegration(provideDataUrlFunc));

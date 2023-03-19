@@ -12,5 +12,7 @@ test('CrmStackSnapshotTest', () => {
 
   template.hasResource('AWS::ApiGateway::RestApi', {});
 
+  template.hasResource('AWS::Lambda::Function', {});
+
   expect(template.toJSON()).toMatchSnapshot();
 });

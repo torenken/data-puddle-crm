@@ -22,7 +22,8 @@ export class Api extends RestApi {
           removalPolicy: RemovalPolicy.DESTROY,
         })),
         accessLogFormat: AccessLogFormat.jsonWithStandardFields(),
-        throttlingRateLimit: 3,
+        throttlingRateLimit: 10,
+        throttlingBurstLimit: 5,
       },
     });
 
@@ -31,7 +32,7 @@ export class Api extends RestApi {
     serverAlarm.addAlarmAction(new SnsAction(props.alarmNotification));
 
     const clientAlarm = this.metricClientError({ period: Duration.minutes(5) })
-      .createAlarm(this, 'ApiMetrics4xAlarm', { alarmName: 'RiskApiMetrics4xAlarm', threshold: 3, evaluationPeriods: 1 });
+      .createAlarm(this, 'ApiMetrics4xAlarm', { alarmName: 'CrmApiMetrics4xAlarm', threshold: 3, evaluationPeriods: 1 });
     clientAlarm.addAlarmAction(new SnsAction(props.alarmNotification));
 
   }
