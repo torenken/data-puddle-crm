@@ -1,11 +1,14 @@
 import { CfnOutput } from 'aws-cdk-lib';
-import { MockIntegration } from 'aws-cdk-lib/aws-apigateway';
+import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
+import { IBucket } from 'aws-cdk-lib/aws-s3';
 import { ITopic } from 'aws-cdk-lib/aws-sns';
 import { Construct } from 'constructs';
 import { Api } from './api';
+import { CrmHandler } from './crm-handler';
 
 export interface CrmEndpointProps {
   readonly alarmNotification: ITopic;
+  readonly dataBucket: IBucket;
 }
 
 export class CrmEndpoint extends Construct {
@@ -19,12 +22,18 @@ export class CrmEndpoint extends Construct {
       alarmNotification: props.alarmNotification,
     });
 
+    const provideDataUrlFunc = new CrmHandler(this, 'ProvideDataUrlFunc', {
+      serviceName: 'provideDataUrl',
+      environment: {
+        DATA_BUCKET_NAME: props.dataBucket.bucketName,
+      },
+    });
+
+    const storeResource = crmApi.root.addResource('store');
+    storeResource.addMethod('GET', new LambdaIntegration(provideDataUrlFunc));
+
     this.urlOutput = new CfnOutput(this, 'Url', {
       value: crmApi.url,
     });
-
-    crmApi.root.addMethod('GET', new MockIntegration());
-
   }
-
 }

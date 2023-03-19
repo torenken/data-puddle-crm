@@ -279,9 +279,10 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "CrmEndpointCrmApiDeploymentF304475Cde82c94e4375eb18337e2d5a95db58f8": Object {
+    "CrmEndpointCrmApiDeploymentF304475Cc29a43286d77494a23623d084c487a97": Object {
       "DependsOn": Array [
-        "CrmEndpointCrmApiGET75749BD4",
+        "CrmEndpointCrmApistoreGETD723469B",
+        "CrmEndpointCrmApistoreA39F3C52",
       ],
       "Properties": Object {
         "Description": "Automatically created by the RestApi construct",
@@ -306,7 +307,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "CrmEndpointCrmApiDeploymentF304475Cde82c94e4375eb18337e2d5a95db58f8",
+          "Ref": "CrmEndpointCrmApiDeploymentF304475Cc29a43286d77494a23623d084c487a97",
         },
         "MethodSettings": Array [
           Object {
@@ -323,24 +324,226 @@ Object {
       },
       "Type": "AWS::ApiGateway::Stage",
     },
-    "CrmEndpointCrmApiGET75749BD4": Object {
+    "CrmEndpointCrmApistoreA39F3C52": Object {
       "Properties": Object {
-        "AuthorizationType": "NONE",
-        "HttpMethod": "GET",
-        "Integration": Object {
-          "Type": "MOCK",
-        },
-        "ResourceId": Object {
+        "ParentId": Object {
           "Fn::GetAtt": Array [
             "CrmEndpointCrmApiDFFF2C98",
             "RootResourceId",
           ],
+        },
+        "PathPart": "store",
+        "RestApiId": Object {
+          "Ref": "CrmEndpointCrmApiDFFF2C98",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "CrmEndpointCrmApistoreGETApiPermissionTestCrmStackCrmEndpointCrmApi3B509CF5GETstoreAA849508": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "CrmEndpointProvideDataUrlFunc0C71F3BE",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "CrmEndpointCrmApiDFFF2C98",
+              },
+              "/",
+              Object {
+                "Ref": "CrmEndpointCrmApiDeploymentStageapi38A35EA3",
+              },
+              "/GET/store",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "CrmEndpointCrmApistoreGETApiPermissionTestTestCrmStackCrmEndpointCrmApi3B509CF5GETstoreDC2503DE": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "CrmEndpointProvideDataUrlFunc0C71F3BE",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "CrmEndpointCrmApiDFFF2C98",
+              },
+              "/test-invoke-stage/GET/store",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "CrmEndpointCrmApistoreGETD723469B": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CrmEndpointProvideDataUrlFunc0C71F3BE",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "CrmEndpointCrmApistoreA39F3C52",
         },
         "RestApiId": Object {
           "Ref": "CrmEndpointCrmApiDFFF2C98",
         },
       },
       "Type": "AWS::ApiGateway::Method",
+    },
+    "CrmEndpointProvideDataUrlFunc0C71F3BE": Object {
+      "DependsOn": Array [
+        "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B",
+      ],
+      "Properties": Object {
+        "Architectures": Array [
+          "arm64",
+        ],
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "c0ee5ac4a39869eb4d76453e294b9f5359faa09770243fd50537e5d8e78113d0.zip",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "DATA_BUCKET_NAME": Object {
+              "Ref": "CrmDataBucket00CB6587",
+            },
+          },
+        },
+        "FunctionName": "data-puddle-mock-provideDataUrl",
+        "Handler": "bootstrap",
+        "MemorySize": 1024,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B",
+            "Arn",
+          ],
+        },
+        "Runtime": "provided.al2",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CrmEndpointProvideDataUrlFuncLogRetention65ADAB23": Object {
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "/aws/lambda/",
+              Object {
+                "Ref": "CrmEndpointProvideDataUrlFunc0C71F3BE",
+              },
+            ],
+          ],
+        },
+        "RetentionInDays": 90,
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::LogRetention",
+    },
+    "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
     },
     "CrmTechnicalNotificationD254254E": Object {
       "Type": "AWS::SNS::Topic",
@@ -412,6 +615,84 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Role",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": Object {
+      "DependsOn": Array [
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "5fa1330271b8967d9254ba2d4a07144f8acefe8b77e6d6bba38261373a50d5f8.zip",
+        },
+        "Handler": "index.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "logs:PutRetentionPolicy",
+                "logs:DeleteRetentionPolicy",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
+        "Roles": Array [
+          Object {
+            "Ref": "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRole9741ECFB",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
     },
   },
   "Rules": Object {

@@ -14,12 +14,13 @@ export class CrmStack extends Stack {
       emailAddresses: props.emailAddresses,
     });
 
-    new DataBucket(this, 'CrmDataBucket', {
+    const dataBucket = new DataBucket(this, 'CrmDataBucket', {
       bucketName: 'torenken-data-puddle-crm-data',
     });
 
     new CrmEndpoint(this, 'CrmEndpoint', {
       alarmNotification: crmTechnicalNotification,
+      dataBucket,
     });
   }
 }
