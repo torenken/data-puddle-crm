@@ -13,8 +13,10 @@ export class TestApp extends App {
   }
 }
 
-export class TestDataPuddleMockCrmStack extends CrmStack {
+export class TestCrmStack extends CrmStack {
   constructor(scope: Construct, id: string) {
-    super(scope, id, { });
+    super(scope, id, {
+      emailAddresses: ['test@example.com'],
+    });
   }
 }

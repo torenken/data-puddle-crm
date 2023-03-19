@@ -1,10 +1,16 @@
 import { Template } from 'aws-cdk-lib/assertions';
-import { TestApp, TestDataPuddleMockCrmStack } from './cdk-test-helper';
+import { TestApp, TestCrmStack } from './cdk-test-helper';
 
-test('DataPuddleMockCrmStackSnapshot', () => {
+test('CrmStackSnapshotTest', () => {
   const app = new TestApp();
-  const stack = new TestDataPuddleMockCrmStack(app, 'DataPuddleMockCrmStack');
+  const stack = new TestCrmStack(app, 'TestCrmStack');
 
   const template = Template.fromStack(stack);
+
+  template.hasResource('AWS::S3::Bucket', {});
+  template.hasResource('AWS::SNS::Topic', {});
+
+  template.hasResource('AWS::ApiGateway::RestApi', {});
+
   expect(template.toJSON()).toMatchSnapshot();
 });

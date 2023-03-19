@@ -1,12 +1,417 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`DataPuddleMockCrmStackSnapshot 1`] = `
+exports[`CrmStackSnapshotTest 1`] = `
 Object {
+  "Outputs": Object {
+    "CrmEndpointCrmApiEndpoint14ED7EBA": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "CrmEndpointCrmApiDFFF2C98",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "CrmEndpointCrmApiDeploymentStageapi38A35EA3",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+    "CrmEndpointUrl50F07980": Object {
+      "Value": Object {
+        "Fn::Join": Array [
+          "",
+          Array [
+            "https://",
+            Object {
+              "Ref": "CrmEndpointCrmApiDFFF2C98",
+            },
+            ".execute-api.",
+            Object {
+              "Ref": "AWS::Region",
+            },
+            ".",
+            Object {
+              "Ref": "AWS::URLSuffix",
+            },
+            "/",
+            Object {
+              "Ref": "CrmEndpointCrmApiDeploymentStageapi38A35EA3",
+            },
+            "/",
+          ],
+        ],
+      },
+    },
+  },
   "Parameters": Object {
     "BootstrapVersion": Object {
       "Default": "/cdk-bootstrap/hnb659fds/version",
       "Description": "Version of the CDK Bootstrap resources in this environment, automatically retrieved from SSM Parameter Store. [cdk:skip]",
       "Type": "AWS::SSM::Parameter::Value<String>",
+    },
+  },
+  "Resources": Object {
+    "CrmDataBucket00CB6587": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "aws:kms",
+              },
+            },
+          ],
+        },
+        "BucketName": "torenken-data-puddle-crm-data",
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "CrmDataBucketAutoDeleteObjectsCustomResourceDDB460D5": Object {
+      "DeletionPolicy": "Delete",
+      "DependsOn": Array [
+        "CrmDataBucketPolicy37F6BF82",
+      ],
+      "Properties": Object {
+        "BucketName": Object {
+          "Ref": "CrmDataBucket00CB6587",
+        },
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::S3AutoDeleteObjects",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "CrmDataBucketPolicy37F6BF82": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "CrmDataBucket00CB6587",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::GetAtt": Array [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn",
+                  ],
+                },
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "CrmDataBucket00CB6587",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "CrmDataBucket00CB6587",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "CrmEndpointAccessLogF36DED2A": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "CrmEndpointCrmApiAccountD493F829": Object {
+      "DeletionPolicy": "Retain",
+      "DependsOn": Array [
+        "CrmEndpointCrmApiDFFF2C98",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "CrmEndpointCrmApiCloudWatchRole9740748F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "CrmEndpointCrmApiApiMetrics4xAlarm7FBA5953": Object {
+      "Properties": Object {
+        "AlarmActions": Array [
+          Object {
+            "Ref": "CrmTechnicalNotificationD254254E",
+          },
+        ],
+        "AlarmName": "RiskApiMetrics4xAlarm",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": Array [
+          Object {
+            "Name": "ApiName",
+            "Value": "CrmApi",
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "4XXError",
+        "Namespace": "AWS/ApiGateway",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 3,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "CrmEndpointCrmApiApiMetrics5xAlarm59FF8780": Object {
+      "Properties": Object {
+        "AlarmActions": Array [
+          Object {
+            "Ref": "CrmTechnicalNotificationD254254E",
+          },
+        ],
+        "AlarmName": "CrmApiMetrics5xAlarm",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": Array [
+          Object {
+            "Name": "ApiName",
+            "Value": "CrmApi",
+          },
+        ],
+        "EvaluationPeriods": 2,
+        "MetricName": "5XXError",
+        "Namespace": "AWS/ApiGateway",
+        "Period": 60,
+        "Statistic": "Sum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "CrmEndpointCrmApiCloudWatchRole9740748F": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "CrmEndpointCrmApiDFFF2C98": Object {
+      "Properties": Object {
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "REGIONAL",
+          ],
+        },
+        "Name": "CrmApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "CrmEndpointCrmApiDeploymentF304475Cde82c94e4375eb18337e2d5a95db58f8": Object {
+      "DependsOn": Array [
+        "CrmEndpointCrmApiGET75749BD4",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "CrmEndpointCrmApiDFFF2C98",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "CrmEndpointCrmApiDeploymentStageapi38A35EA3": Object {
+      "DependsOn": Array [
+        "CrmEndpointCrmApiAccountD493F829",
+      ],
+      "Properties": Object {
+        "AccessLogSetting": Object {
+          "DestinationArn": Object {
+            "Fn::GetAtt": Array [
+              "CrmEndpointAccessLogF36DED2A",
+              "Arn",
+            ],
+          },
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
+        },
+        "DeploymentId": Object {
+          "Ref": "CrmEndpointCrmApiDeploymentF304475Cde82c94e4375eb18337e2d5a95db58f8",
+        },
+        "MethodSettings": Array [
+          Object {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "ResourcePath": "/*",
+            "ThrottlingRateLimit": 3,
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "CrmEndpointCrmApiDFFF2C98",
+        },
+        "StageName": "api",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "CrmEndpointCrmApiGET75749BD4": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": Object {
+          "Type": "MOCK",
+        },
+        "ResourceId": Object {
+          "Fn::GetAtt": Array [
+            "CrmEndpointCrmApiDFFF2C98",
+            "RootResourceId",
+          ],
+        },
+        "RestApiId": Object {
+          "Ref": "CrmEndpointCrmApiDFFF2C98",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "CrmTechnicalNotificationD254254E": Object {
+      "Type": "AWS::SNS::Topic",
+    },
+    "CrmTechnicalNotificationtestexamplecom171BB56B": Object {
+      "Properties": Object {
+        "Endpoint": "test@example.com",
+        "Protocol": "email",
+        "TopicArn": Object {
+          "Ref": "CrmTechnicalNotificationD254254E",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": Object {
+      "DependsOn": Array [
+        "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip",
+        },
+        "Description": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "Lambda function for auto-deleting objects in ",
+              Object {
+                "Ref": "CrmDataBucket00CB6587",
+              },
+              " S3 bucket.",
+            ],
+          ],
+        },
+        "Handler": "__entrypoint__.handler",
+        "MemorySize": 128,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+        "Timeout": 900,
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Sub": "arn:\${AWS::Partition}:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
     },
   },
   "Rules": Object {
