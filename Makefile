@@ -19,7 +19,7 @@ NAME := data-puddle-mock
 LAMBDA_DIR := ./app/services
 BUILD_DIR := ./build
 
-# List of aws lambda functions (see cmd folder)
+# List of aws lambda functions (see services folder)
 ALL_LAMBDAS := \
 	provide-data-url
 
