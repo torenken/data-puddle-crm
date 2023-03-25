@@ -23,7 +23,7 @@ export class CrmEndpoint extends Construct {
     });
 
     const provideDataUrlFunc = new CrmHandler(this, 'ProvideDataUrlFunc', {
-      serviceName: 'provideDataUrl',
+      serviceName: 'provide-data-url',
       environment: {
         DATA_BUCKET_NAME: props.dataBucket.bucketName,
       },

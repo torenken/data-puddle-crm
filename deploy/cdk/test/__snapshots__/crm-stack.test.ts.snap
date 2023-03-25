@@ -279,7 +279,7 @@ Object {
       },
       "Type": "AWS::ApiGateway::RestApi",
     },
-    "CrmEndpointCrmApiDeploymentF304475Cc29a43286d77494a23623d084c487a97": Object {
+    "CrmEndpointCrmApiDeploymentF304475C4db15c7cde287317b01f180b6eb6a6dd": Object {
       "DependsOn": Array [
         "CrmEndpointCrmApistoreGETD723469B",
         "CrmEndpointCrmApistoreA39F3C52",
@@ -307,7 +307,7 @@ Object {
           "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
         },
         "DeploymentId": Object {
-          "Ref": "CrmEndpointCrmApiDeploymentF304475Cc29a43286d77494a23623d084c487a97",
+          "Ref": "CrmEndpointCrmApiDeploymentF304475C4db15c7cde287317b01f180b6eb6a6dd",
         },
         "MethodSettings": Array [
           Object {
@@ -471,7 +471,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "c0ee5ac4a39869eb4d76453e294b9f5359faa09770243fd50537e5d8e78113d0.zip",
+          "S3Key": "84b20486ff9fb53b04ee0eacfaac666f98a154f5024dd8bf09215f1f9abc17d1.zip",
         },
         "Environment": Object {
           "Variables": Object {
@@ -480,7 +480,7 @@ Object {
             },
           },
         },
-        "FunctionName": "data-puddle-mock-provideDataUrl",
+        "FunctionName": "data-puddle-mock-provide-data-url",
         "Handler": "bootstrap",
         "MemorySize": 1024,
         "Role": Object {

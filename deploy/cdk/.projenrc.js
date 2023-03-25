@@ -3,7 +3,7 @@ const { awscdk } = require('projen');
 const appName = 'data-puddle-mock-env';
 
 const project = new awscdk.AwsCdkTypeScriptApp({
-  cdkVersion: '2.69.0',
+  cdkVersion: '2.70.0',
   defaultReleaseBranch: 'main',
   authorName: 'Thomas Renken',
   repository: `git@github.com:torenken/${appName}.git`,
