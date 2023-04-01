@@ -4,6 +4,7 @@
     "technicalStakeholders": [
       "test@example.com"
     ],
+    "exportDataBucketName": "name-data-puddle-mock-env-crm-data-export",
     "@aws-cdk/core:newStyleStackSynthesis": true
   },
   "output": "cdk.out",

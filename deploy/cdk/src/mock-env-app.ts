@@ -7,9 +7,11 @@ Tags.of(app).add('domain', 'data-puddle');
 Tags.of(app).add('owner', 'torenken');
 
 const technicalStakeholders = app.node.tryGetContext('technicalStakeholders');
+const exportDataBucketName = app.node.tryGetContext('exportDataBucketName');
 
 new CrmStack(app, 'DataPuddleMockCrmStack', {
   emailAddresses: technicalStakeholders,
+  exportDataBucketName,
 });
 
 app.synth();

@@ -4,6 +4,7 @@ import { CrmEndpoint, DataBucket, TechnicalNotification } from './crm';
 
 export interface CrmStackProps extends StackProps {
   readonly emailAddresses: string[];
+  readonly exportDataBucketName: string;
 }
 
 export class CrmStack extends Stack {
@@ -15,7 +16,7 @@ export class CrmStack extends Stack {
     });
 
     const dataBucket = new DataBucket(this, 'CrmDataBucket', {
-      bucketName: 'torenken-data-puddle-crm-data',
+      bucketName: props.exportDataBucketName,
     });
 
     new CrmEndpoint(this, 'CrmEndpoint', {

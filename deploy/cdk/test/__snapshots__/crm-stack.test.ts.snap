@@ -76,7 +76,7 @@ Object {
             },
           ],
         },
-        "BucketName": "torenken-data-puddle-crm-data",
+        "BucketName": "crm-data-export",
         "PublicAccessBlockConfiguration": Object {
           "BlockPublicAcls": true,
           "BlockPublicPolicy": true,

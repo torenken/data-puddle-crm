@@ -17,6 +17,7 @@ export class TestCrmStack extends CrmStack {
   constructor(scope: Construct, id: string) {
     super(scope, id, {
       emailAddresses: ['test@example.com'],
+      exportDataBucketName: 'crm-data-export',
     });
   }
 }
