@@ -1,5 +1,5 @@
 import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { AccessLogFormat, EndpointType, LogGroupLogDestination, RestApi } from 'aws-cdk-lib/aws-apigateway';
+import { AccessLogFormat, ApiKey, EndpointType, LogGroupLogDestination, RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { SnsAction } from 'aws-cdk-lib/aws-cloudwatch-actions';
 import { LogGroup, RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { ITopic } from 'aws-cdk-lib/aws-sns';
@@ -16,7 +16,7 @@ export class DataPuddleCrnApi extends RestApi {
         types: [EndpointType.REGIONAL],
       },
       deployOptions: {
-        stageName: 'api',
+        stageName: 'dev',
         accessLogDestination: new LogGroupLogDestination(new LogGroup(scope, 'AccessLog', {
           retention: RetentionDays.THREE_MONTHS,
           removalPolicy: RemovalPolicy.DESTROY,
@@ -28,12 +28,32 @@ export class DataPuddleCrnApi extends RestApi {
     });
 
     const serverAlarm = this.metricServerError({ period: Duration.minutes(1) })
-      .createAlarm(this, 'ApiMetrics5xAlarm', { alarmName: 'CrmApiMetrics5xAlarm', threshold: 1, evaluationPeriods: 2 });
+      .createAlarm(this, 'ApiMetrics5xAlarm', {
+        alarmName: 'DataPuddleCrmApiMetrics5xAlarm',
+        threshold: 1,
+        evaluationPeriods: 2,
+      });
     serverAlarm.addAlarmAction(new SnsAction(props.alarmNotification));
 
     const clientAlarm = this.metricClientError({ period: Duration.minutes(5) })
-      .createAlarm(this, 'ApiMetrics4xAlarm', { alarmName: 'CrmApiMetrics4xAlarm', threshold: 3, evaluationPeriods: 1 });
+      .createAlarm(this, 'ApiMetrics4xAlarm', {
+        alarmName: 'DataPuddleCrmApiMetrics4xAlarm',
+        threshold: 3,
+        evaluationPeriods: 1,
+      });
     clientAlarm.addAlarmAction(new SnsAction(props.alarmNotification));
 
+    const usagePlan = this.addUsagePlan('DataPuddleCrmUsagePlan', {
+      throttle: {
+        rateLimit: 10,
+        burstLimit: 5,
+      },
+      apiStages: [{
+        api: this,
+        stage: this.deploymentStage,
+      }],
+    });
+
+    usagePlan.addApiKey(new ApiKey(this, 'DataPuddleCrmApiKey'));
   }
 }

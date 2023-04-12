@@ -22,16 +22,19 @@ export class DataPuddleCrmEndpoint extends Construct {
       alarmNotification: props.alarmNotification,
     });
 
-    const provideDataUrlFunc = new DataPuddleCrmHandler(this, 'CreateAgreementFunc', {
+    const createAgreementFunc = new DataPuddleCrmHandler(this, 'CreateAgreementFunc', {
       serviceName: 'create-agreement',
       environment: {
         DATA_BUCKET_NAME: props.dataBucket.bucketName,
       },
     });
-    props.dataBucket.grantRead(provideDataUrlFunc);
+    props.dataBucket.grantWrite(createAgreementFunc);
 
     const agreementResource = crmApi.root.addResource('agreement');
-    agreementResource.addMethod('POST', new LambdaIntegration(provideDataUrlFunc));
+
+    agreementResource.addMethod('POST', new LambdaIntegration(createAgreementFunc), {
+      apiKeyRequired: true,
+    });
 
     this.urlOutput = new CfnOutput(this, 'Url', {
       value: crmApi.url,
