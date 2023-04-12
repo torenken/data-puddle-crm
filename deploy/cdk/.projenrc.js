@@ -19,7 +19,7 @@ const project = new awscdk.AwsCdkTypeScriptApp({
     // data-puddle-mock-env
     'technicalStakeholders': ['test@example.com'], //todo change email
     // endpoint-env
-    'exportDataBucketName': `${appName}-export`, //todo change the name
+    'exportDataBucketName': `name-${appName}-export-bucket`, //todo change the name
 
     '@aws-cdk/core:newStyleStackSynthesis': true,
   },
