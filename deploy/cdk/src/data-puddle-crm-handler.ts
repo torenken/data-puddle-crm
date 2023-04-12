@@ -4,16 +4,16 @@ import { Architecture } from 'aws-cdk-lib/aws-lambda';
 import { RetentionDays } from 'aws-cdk-lib/aws-logs';
 import { Construct } from 'constructs';
 
-export interface CrmHandlerProps {
+export interface DataPuddleCrmHandlerProps {
   readonly serviceName: string;
   readonly environment: Record<string, string>;
 }
 
-export class CrmHandler extends GoFunction {
-  constructor(scope: Construct, id: string, props: CrmHandlerProps) {
+export class DataPuddleCrmHandler extends GoFunction {
+  constructor(scope: Construct, id: string, props: DataPuddleCrmHandlerProps) {
     super(scope, id, {
-      entry: path.join(__dirname, `../../../../app/services/${props.serviceName}`),
-      functionName: `data-puddle-mock-${props.serviceName}`,
+      entry: path.join(__dirname, `../../../app/services/${props.serviceName}`),
+      functionName: `data-puddle-crm-${props.serviceName}`,
 
       memorySize: 1024,
       logRetention: RetentionDays.THREE_MONTHS,

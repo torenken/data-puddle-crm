@@ -1,6 +1,6 @@
 import { App } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
-import { CrmStack } from '../src';
+import { DataPuddleCrmStack } from '../src/data-puddle-crm-stack';
 
 export class TestApp extends App {
   constructor() {
@@ -13,11 +13,11 @@ export class TestApp extends App {
   }
 }
 
-export class TestCrmStack extends CrmStack {
+export class TestCrmStack extends DataPuddleCrmStack {
   constructor(scope: Construct, id: string) {
     super(scope, id, {
       emailAddresses: ['test@example.com'],
-      exportDataBucketName: 'crm-data-export',
+      exportDataBucketName: 'endpoint-data-export',
     });
   }
 }

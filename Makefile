@@ -15,13 +15,13 @@ dev-gotooling:
 
 AWS_PROFILE := # configure aws profile here
 
-NAME := data-puddle-mock
+NAME := data-puddle-crm
 LAMBDA_DIR := ./app/services
 BUILD_DIR := ./build
 
 # List of aws lambda functions (see services folder)
 ALL_LAMBDAS := \
-	provide-data-url
+	create-agreement
 
 build: $(addprefix build-, $(ALL_LAMBDAS))
 

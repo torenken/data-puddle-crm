@@ -1,26 +1,29 @@
 const { awscdk } = require('projen');
 
-const appName = 'data-puddle-mock-env';
+const appName = 'data-puddle-crm';
 
 const project = new awscdk.AwsCdkTypeScriptApp({
-  cdkVersion: '2.72.1',
+  cdkVersion: '2.73.0',
   defaultReleaseBranch: 'main',
   authorName: 'Thomas Renken',
   repository: `git@github.com:torenken/${appName}.git`,
   name: appName,
 
-  deps: ['@aws-cdk/aws-lambda-go-alpha'],
+  deps: [
+    '@aws-cdk/aws-lambda-go-alpha',
+  ],
+
   // devDeps: [],
 
   context: {
     // data-puddle-mock-env
     'technicalStakeholders': ['test@example.com'], //todo change email
-    // crm-env
-    'exportDataBucketName': `name-${appName}-crm-data-export`, //todo change the name
+    // endpoint-env
+    'exportDataBucketName': `${appName}-export`, //todo change the name
 
     '@aws-cdk/core:newStyleStackSynthesis': true,
   },
-  appEntrypoint: 'mock-env-app.ts',
+  appEntrypoint: `${appName}-app.ts`,
 
   jestOptions: {
     jestVersion: '28',

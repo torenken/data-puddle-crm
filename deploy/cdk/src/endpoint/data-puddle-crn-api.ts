@@ -9,7 +9,7 @@ export interface ApiProps {
   readonly alarmNotification: ITopic;
 }
 
-export class Api extends RestApi {
+export class DataPuddleCrnApi extends RestApi {
   constructor(scope: Construct, id: string, props: ApiProps) {
     super(scope, id, {
       endpointConfiguration: {

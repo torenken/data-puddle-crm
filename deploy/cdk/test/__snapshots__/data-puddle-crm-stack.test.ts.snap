@@ -1,16 +1,16 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`CrmStackSnapshotTest 1`] = `
+exports[`DataPuddleCrmStackSnapshotTest 1`] = `
 Object {
   "Outputs": Object {
-    "CrmEndpointCrmApiEndpoint14ED7EBA": Object {
+    "DataPuddleCrmEndpointDataPuddleCrnApiEndpointB7ACEBD7": Object {
       "Value": Object {
         "Fn::Join": Array [
           "",
           Array [
             "https://",
             Object {
-              "Ref": "CrmEndpointCrmApiDFFF2C98",
+              "Ref": "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
             },
             ".execute-api.",
             Object {
@@ -22,21 +22,21 @@ Object {
             },
             "/",
             Object {
-              "Ref": "CrmEndpointCrmApiDeploymentStageapi38A35EA3",
+              "Ref": "DataPuddleCrmEndpointDataPuddleCrnApiDeploymentStageapiDA44BB96",
             },
             "/",
           ],
         ],
       },
     },
-    "CrmEndpointUrl50F07980": Object {
+    "DataPuddleCrmEndpointUrlC9830EC4": Object {
       "Value": Object {
         "Fn::Join": Array [
           "",
           Array [
             "https://",
             Object {
-              "Ref": "CrmEndpointCrmApiDFFF2C98",
+              "Ref": "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
             },
             ".execute-api.",
             Object {
@@ -48,7 +48,7 @@ Object {
             },
             "/",
             Object {
-              "Ref": "CrmEndpointCrmApiDeploymentStageapi38A35EA3",
+              "Ref": "DataPuddleCrmEndpointDataPuddleCrnApiDeploymentStageapiDA44BB96",
             },
             "/",
           ],
@@ -64,548 +64,6 @@ Object {
     },
   },
   "Resources": Object {
-    "CrmDataBucket00CB6587": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "BucketEncryption": Object {
-          "ServerSideEncryptionConfiguration": Array [
-            Object {
-              "ServerSideEncryptionByDefault": Object {
-                "SSEAlgorithm": "aws:kms",
-              },
-            },
-          ],
-        },
-        "BucketName": "crm-data-export",
-        "PublicAccessBlockConfiguration": Object {
-          "BlockPublicAcls": true,
-          "BlockPublicPolicy": true,
-          "IgnorePublicAcls": true,
-          "RestrictPublicBuckets": true,
-        },
-        "Tags": Array [
-          Object {
-            "Key": "aws-cdk:auto-delete-objects",
-            "Value": "true",
-          },
-        ],
-      },
-      "Type": "AWS::S3::Bucket",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "CrmDataBucketAutoDeleteObjectsCustomResourceDDB460D5": Object {
-      "DeletionPolicy": "Delete",
-      "DependsOn": Array [
-        "CrmDataBucketPolicy37F6BF82",
-      ],
-      "Properties": Object {
-        "BucketName": Object {
-          "Ref": "CrmDataBucket00CB6587",
-        },
-        "ServiceToken": Object {
-          "Fn::GetAtt": Array [
-            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "Custom::S3AutoDeleteObjects",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "CrmDataBucketPolicy37F6BF82": Object {
-      "Properties": Object {
-        "Bucket": Object {
-          "Ref": "CrmDataBucket00CB6587",
-        },
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "s3:GetBucket*",
-                "s3:List*",
-                "s3:DeleteObject*",
-              ],
-              "Effect": "Allow",
-              "Principal": Object {
-                "AWS": Object {
-                  "Fn::GetAtt": Array [
-                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
-                    "Arn",
-                  ],
-                },
-              },
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "CrmDataBucket00CB6587",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "CrmDataBucket00CB6587",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-      },
-      "Type": "AWS::S3::BucketPolicy",
-    },
-    "CrmEndpointAccessLogF36DED2A": Object {
-      "DeletionPolicy": "Delete",
-      "Properties": Object {
-        "RetentionInDays": 90,
-      },
-      "Type": "AWS::Logs::LogGroup",
-      "UpdateReplacePolicy": "Delete",
-    },
-    "CrmEndpointCrmApiAccountD493F829": Object {
-      "DeletionPolicy": "Retain",
-      "DependsOn": Array [
-        "CrmEndpointCrmApiDFFF2C98",
-      ],
-      "Properties": Object {
-        "CloudWatchRoleArn": Object {
-          "Fn::GetAtt": Array [
-            "CrmEndpointCrmApiCloudWatchRole9740748F",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "AWS::ApiGateway::Account",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "CrmEndpointCrmApiApiMetrics4xAlarm7FBA5953": Object {
-      "Properties": Object {
-        "AlarmActions": Array [
-          Object {
-            "Ref": "CrmTechnicalNotificationD254254E",
-          },
-        ],
-        "AlarmName": "CrmApiMetrics4xAlarm",
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "Dimensions": Array [
-          Object {
-            "Name": "ApiName",
-            "Value": "CrmApi",
-          },
-        ],
-        "EvaluationPeriods": 1,
-        "MetricName": "4XXError",
-        "Namespace": "AWS/ApiGateway",
-        "Period": 300,
-        "Statistic": "Sum",
-        "Threshold": 3,
-      },
-      "Type": "AWS::CloudWatch::Alarm",
-    },
-    "CrmEndpointCrmApiApiMetrics5xAlarm59FF8780": Object {
-      "Properties": Object {
-        "AlarmActions": Array [
-          Object {
-            "Ref": "CrmTechnicalNotificationD254254E",
-          },
-        ],
-        "AlarmName": "CrmApiMetrics5xAlarm",
-        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
-        "Dimensions": Array [
-          Object {
-            "Name": "ApiName",
-            "Value": "CrmApi",
-          },
-        ],
-        "EvaluationPeriods": 2,
-        "MetricName": "5XXError",
-        "Namespace": "AWS/ApiGateway",
-        "Period": 60,
-        "Statistic": "Sum",
-        "Threshold": 1,
-      },
-      "Type": "AWS::CloudWatch::Alarm",
-    },
-    "CrmEndpointCrmApiCloudWatchRole9740748F": Object {
-      "DeletionPolicy": "Retain",
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "apigateway.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
-              ],
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-      "UpdateReplacePolicy": "Retain",
-    },
-    "CrmEndpointCrmApiDFFF2C98": Object {
-      "Properties": Object {
-        "EndpointConfiguration": Object {
-          "Types": Array [
-            "REGIONAL",
-          ],
-        },
-        "Name": "CrmApi",
-      },
-      "Type": "AWS::ApiGateway::RestApi",
-    },
-    "CrmEndpointCrmApiDeploymentF304475C4db15c7cde287317b01f180b6eb6a6dd": Object {
-      "DependsOn": Array [
-        "CrmEndpointCrmApistoreGETD723469B",
-        "CrmEndpointCrmApistoreA39F3C52",
-      ],
-      "Properties": Object {
-        "Description": "Automatically created by the RestApi construct",
-        "RestApiId": Object {
-          "Ref": "CrmEndpointCrmApiDFFF2C98",
-        },
-      },
-      "Type": "AWS::ApiGateway::Deployment",
-    },
-    "CrmEndpointCrmApiDeploymentStageapi38A35EA3": Object {
-      "DependsOn": Array [
-        "CrmEndpointCrmApiAccountD493F829",
-      ],
-      "Properties": Object {
-        "AccessLogSetting": Object {
-          "DestinationArn": Object {
-            "Fn::GetAtt": Array [
-              "CrmEndpointAccessLogF36DED2A",
-              "Arn",
-            ],
-          },
-          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
-        },
-        "DeploymentId": Object {
-          "Ref": "CrmEndpointCrmApiDeploymentF304475C4db15c7cde287317b01f180b6eb6a6dd",
-        },
-        "MethodSettings": Array [
-          Object {
-            "DataTraceEnabled": false,
-            "HttpMethod": "*",
-            "ResourcePath": "/*",
-            "ThrottlingBurstLimit": 5,
-            "ThrottlingRateLimit": 10,
-          },
-        ],
-        "RestApiId": Object {
-          "Ref": "CrmEndpointCrmApiDFFF2C98",
-        },
-        "StageName": "api",
-      },
-      "Type": "AWS::ApiGateway::Stage",
-    },
-    "CrmEndpointCrmApistoreA39F3C52": Object {
-      "Properties": Object {
-        "ParentId": Object {
-          "Fn::GetAtt": Array [
-            "CrmEndpointCrmApiDFFF2C98",
-            "RootResourceId",
-          ],
-        },
-        "PathPart": "store",
-        "RestApiId": Object {
-          "Ref": "CrmEndpointCrmApiDFFF2C98",
-        },
-      },
-      "Type": "AWS::ApiGateway::Resource",
-    },
-    "CrmEndpointCrmApistoreGETApiPermissionTestCrmStackCrmEndpointCrmApi3B509CF5GETstoreAA849508": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "CrmEndpointProvideDataUrlFunc0C71F3BE",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "CrmEndpointCrmApiDFFF2C98",
-              },
-              "/",
-              Object {
-                "Ref": "CrmEndpointCrmApiDeploymentStageapi38A35EA3",
-              },
-              "/GET/store",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "CrmEndpointCrmApistoreGETApiPermissionTestTestCrmStackCrmEndpointCrmApi3B509CF5GETstoreDC2503DE": Object {
-      "Properties": Object {
-        "Action": "lambda:InvokeFunction",
-        "FunctionName": Object {
-          "Fn::GetAtt": Array [
-            "CrmEndpointProvideDataUrlFunc0C71F3BE",
-            "Arn",
-          ],
-        },
-        "Principal": "apigateway.amazonaws.com",
-        "SourceArn": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "arn:",
-              Object {
-                "Ref": "AWS::Partition",
-              },
-              ":execute-api:",
-              Object {
-                "Ref": "AWS::Region",
-              },
-              ":",
-              Object {
-                "Ref": "AWS::AccountId",
-              },
-              ":",
-              Object {
-                "Ref": "CrmEndpointCrmApiDFFF2C98",
-              },
-              "/test-invoke-stage/GET/store",
-            ],
-          ],
-        },
-      },
-      "Type": "AWS::Lambda::Permission",
-    },
-    "CrmEndpointCrmApistoreGETD723469B": Object {
-      "Properties": Object {
-        "AuthorizationType": "NONE",
-        "HttpMethod": "GET",
-        "Integration": Object {
-          "IntegrationHttpMethod": "POST",
-          "Type": "AWS_PROXY",
-          "Uri": Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":apigateway:",
-                Object {
-                  "Ref": "AWS::Region",
-                },
-                ":lambda:path/2015-03-31/functions/",
-                Object {
-                  "Fn::GetAtt": Array [
-                    "CrmEndpointProvideDataUrlFunc0C71F3BE",
-                    "Arn",
-                  ],
-                },
-                "/invocations",
-              ],
-            ],
-          },
-        },
-        "ResourceId": Object {
-          "Ref": "CrmEndpointCrmApistoreA39F3C52",
-        },
-        "RestApiId": Object {
-          "Ref": "CrmEndpointCrmApiDFFF2C98",
-        },
-      },
-      "Type": "AWS::ApiGateway::Method",
-    },
-    "CrmEndpointProvideDataUrlFunc0C71F3BE": Object {
-      "DependsOn": Array [
-        "CrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy2FCE8FA3",
-        "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B",
-      ],
-      "Properties": Object {
-        "Architectures": Array [
-          "arm64",
-        ],
-        "Code": Object {
-          "S3Bucket": Object {
-            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
-          },
-          "S3Key": "84b20486ff9fb53b04ee0eacfaac666f98a154f5024dd8bf09215f1f9abc17d1.zip",
-        },
-        "Environment": Object {
-          "Variables": Object {
-            "DATA_BUCKET_NAME": Object {
-              "Ref": "CrmDataBucket00CB6587",
-            },
-          },
-        },
-        "FunctionName": "data-puddle-mock-provide-data-url",
-        "Handler": "bootstrap",
-        "MemorySize": 1024,
-        "Role": Object {
-          "Fn::GetAtt": Array [
-            "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B",
-            "Arn",
-          ],
-        },
-        "Runtime": "provided.al2",
-      },
-      "Type": "AWS::Lambda::Function",
-    },
-    "CrmEndpointProvideDataUrlFuncLogRetention65ADAB23": Object {
-      "Properties": Object {
-        "LogGroupName": Object {
-          "Fn::Join": Array [
-            "",
-            Array [
-              "/aws/lambda/",
-              Object {
-                "Ref": "CrmEndpointProvideDataUrlFunc0C71F3BE",
-              },
-            ],
-          ],
-        },
-        "RetentionInDays": 90,
-        "ServiceToken": Object {
-          "Fn::GetAtt": Array [
-            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
-            "Arn",
-          ],
-        },
-      },
-      "Type": "Custom::LogRetention",
-    },
-    "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-              ],
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
-    },
-    "CrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy2FCE8FA3": Object {
-      "Properties": Object {
-        "PolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": Array [
-                "s3:GetObject*",
-                "s3:GetBucket*",
-                "s3:List*",
-              ],
-              "Effect": "Allow",
-              "Resource": Array [
-                Object {
-                  "Fn::GetAtt": Array [
-                    "CrmDataBucket00CB6587",
-                    "Arn",
-                  ],
-                },
-                Object {
-                  "Fn::Join": Array [
-                    "",
-                    Array [
-                      Object {
-                        "Fn::GetAtt": Array [
-                          "CrmDataBucket00CB6587",
-                          "Arn",
-                        ],
-                      },
-                      "/*",
-                    ],
-                  ],
-                },
-              ],
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "PolicyName": "CrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy2FCE8FA3",
-        "Roles": Array [
-          Object {
-            "Ref": "CrmEndpointProvideDataUrlFuncServiceRole4DFD424B",
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Policy",
-    },
-    "CrmTechnicalNotificationD254254E": Object {
-      "Type": "AWS::SNS::Topic",
-    },
-    "CrmTechnicalNotificationtestexamplecom171BB56B": Object {
-      "Properties": Object {
-        "Endpoint": "test@example.com",
-        "Protocol": "email",
-        "TopicArn": Object {
-          "Ref": "CrmTechnicalNotificationD254254E",
-        },
-      },
-      "Type": "AWS::SNS::Subscription",
-    },
     "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F": Object {
       "DependsOn": Array [
         "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
@@ -615,7 +73,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "350185a1069fa20a23a583e20c77f6844218bd73097902362dc94f1a108f5d89.zip",
+          "S3Key": "40aa87cdf43c4095cec18bc443965f22ab2f8c1ace47e482a0ba4e35d83b0cc9.zip",
         },
         "Description": Object {
           "Fn::Join": Array [
@@ -623,7 +81,7 @@ Object {
             Array [
               "Lambda function for auto-deleting objects in ",
               Object {
-                "Ref": "CrmDataBucket00CB6587",
+                "Ref": "DataBucketE3889A50",
               },
               " S3 bucket.",
             ],
@@ -664,6 +122,535 @@ Object {
       },
       "Type": "AWS::IAM::Role",
     },
+    "DataBucketAutoDeleteObjectsCustomResource9FB51BF3": Object {
+      "DeletionPolicy": "Delete",
+      "DependsOn": Array [
+        "DataBucketPolicy3231C704",
+      ],
+      "Properties": Object {
+        "BucketName": Object {
+          "Ref": "DataBucketE3889A50",
+        },
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "CustomS3AutoDeleteObjectsCustomResourceProviderHandler9D90184F",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::S3AutoDeleteObjects",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "DataBucketE3889A50": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "BucketEncryption": Object {
+          "ServerSideEncryptionConfiguration": Array [
+            Object {
+              "ServerSideEncryptionByDefault": Object {
+                "SSEAlgorithm": "aws:kms",
+              },
+            },
+          ],
+        },
+        "BucketName": "endpoint-data-export",
+        "PublicAccessBlockConfiguration": Object {
+          "BlockPublicAcls": true,
+          "BlockPublicPolicy": true,
+          "IgnorePublicAcls": true,
+          "RestrictPublicBuckets": true,
+        },
+        "Tags": Array [
+          Object {
+            "Key": "aws-cdk:auto-delete-objects",
+            "Value": "true",
+          },
+        ],
+      },
+      "Type": "AWS::S3::Bucket",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "DataBucketPolicy3231C704": Object {
+      "Properties": Object {
+        "Bucket": Object {
+          "Ref": "DataBucketE3889A50",
+        },
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetBucket*",
+                "s3:List*",
+                "s3:DeleteObject*",
+              ],
+              "Effect": "Allow",
+              "Principal": Object {
+                "AWS": Object {
+                  "Fn::GetAtt": Array [
+                    "CustomS3AutoDeleteObjectsCustomResourceProviderRole3B1BD092",
+                    "Arn",
+                  ],
+                },
+              },
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "DataBucketE3889A50",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "DataBucketE3889A50",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::S3::BucketPolicy",
+    },
+    "DataPuddleCrmEndpointAccessLog087C5F31": Object {
+      "DeletionPolicy": "Delete",
+      "Properties": Object {
+        "RetentionInDays": 90,
+      },
+      "Type": "AWS::Logs::LogGroup",
+      "UpdateReplacePolicy": "Delete",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5": Object {
+      "Properties": Object {
+        "EndpointConfiguration": Object {
+          "Types": Array [
+            "REGIONAL",
+          ],
+        },
+        "Name": "DataPuddleCrnApi",
+      },
+      "Type": "AWS::ApiGateway::RestApi",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApiAccountC3EFA270": Object {
+      "DeletionPolicy": "Retain",
+      "DependsOn": Array [
+        "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
+      ],
+      "Properties": Object {
+        "CloudWatchRoleArn": Object {
+          "Fn::GetAtt": Array [
+            "DataPuddleCrmEndpointDataPuddleCrnApiCloudWatchRole6AAAEADE",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "AWS::ApiGateway::Account",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApiApiMetrics4xAlarm6F25283F": Object {
+      "Properties": Object {
+        "AlarmActions": Array [
+          Object {
+            "Ref": "TechnicalNotification33611BF6",
+          },
+        ],
+        "AlarmName": "CrmApiMetrics4xAlarm",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": Array [
+          Object {
+            "Name": "ApiName",
+            "Value": "DataPuddleCrnApi",
+          },
+        ],
+        "EvaluationPeriods": 1,
+        "MetricName": "4XXError",
+        "Namespace": "AWS/ApiGateway",
+        "Period": 300,
+        "Statistic": "Sum",
+        "Threshold": 3,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApiApiMetrics5xAlarm0CF3CB7D": Object {
+      "Properties": Object {
+        "AlarmActions": Array [
+          Object {
+            "Ref": "TechnicalNotification33611BF6",
+          },
+        ],
+        "AlarmName": "CrmApiMetrics5xAlarm",
+        "ComparisonOperator": "GreaterThanOrEqualToThreshold",
+        "Dimensions": Array [
+          Object {
+            "Name": "ApiName",
+            "Value": "DataPuddleCrnApi",
+          },
+        ],
+        "EvaluationPeriods": 2,
+        "MetricName": "5XXError",
+        "Namespace": "AWS/ApiGateway",
+        "Period": 60,
+        "Statistic": "Sum",
+        "Threshold": 1,
+      },
+      "Type": "AWS::CloudWatch::Alarm",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApiCloudWatchRole6AAAEADE": Object {
+      "DeletionPolicy": "Retain",
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "apigateway.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AmazonAPIGatewayPushToCloudWatchLogs",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+      "UpdateReplacePolicy": "Retain",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApiDeploymentBF3E504Def4fecbb3f68a08361ef281a1a9d4a02": Object {
+      "DependsOn": Array [
+        "DataPuddleCrmEndpointDataPuddleCrnApistoreGET47991948",
+        "DataPuddleCrmEndpointDataPuddleCrnApistoreB30ABA5C",
+      ],
+      "Properties": Object {
+        "Description": "Automatically created by the RestApi construct",
+        "RestApiId": Object {
+          "Ref": "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
+        },
+      },
+      "Type": "AWS::ApiGateway::Deployment",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApiDeploymentStageapiDA44BB96": Object {
+      "DependsOn": Array [
+        "DataPuddleCrmEndpointDataPuddleCrnApiAccountC3EFA270",
+      ],
+      "Properties": Object {
+        "AccessLogSetting": Object {
+          "DestinationArn": Object {
+            "Fn::GetAtt": Array [
+              "DataPuddleCrmEndpointAccessLog087C5F31",
+              "Arn",
+            ],
+          },
+          "Format": "{\\"requestId\\":\\"$context.requestId\\",\\"ip\\":\\"$context.identity.sourceIp\\",\\"user\\":\\"$context.identity.user\\",\\"caller\\":\\"$context.identity.caller\\",\\"requestTime\\":\\"$context.requestTime\\",\\"httpMethod\\":\\"$context.httpMethod\\",\\"resourcePath\\":\\"$context.resourcePath\\",\\"status\\":\\"$context.status\\",\\"protocol\\":\\"$context.protocol\\",\\"responseLength\\":\\"$context.responseLength\\"}",
+        },
+        "DeploymentId": Object {
+          "Ref": "DataPuddleCrmEndpointDataPuddleCrnApiDeploymentBF3E504Def4fecbb3f68a08361ef281a1a9d4a02",
+        },
+        "MethodSettings": Array [
+          Object {
+            "DataTraceEnabled": false,
+            "HttpMethod": "*",
+            "ResourcePath": "/*",
+            "ThrottlingBurstLimit": 5,
+            "ThrottlingRateLimit": 10,
+          },
+        ],
+        "RestApiId": Object {
+          "Ref": "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
+        },
+        "StageName": "api",
+      },
+      "Type": "AWS::ApiGateway::Stage",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApistoreB30ABA5C": Object {
+      "Properties": Object {
+        "ParentId": Object {
+          "Fn::GetAtt": Array [
+            "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
+            "RootResourceId",
+          ],
+        },
+        "PathPart": "store",
+        "RestApiId": Object {
+          "Ref": "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
+        },
+      },
+      "Type": "AWS::ApiGateway::Resource",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApistoreGET47991948": Object {
+      "Properties": Object {
+        "AuthorizationType": "NONE",
+        "HttpMethod": "GET",
+        "Integration": Object {
+          "IntegrationHttpMethod": "POST",
+          "Type": "AWS_PROXY",
+          "Uri": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":apigateway:",
+                Object {
+                  "Ref": "AWS::Region",
+                },
+                ":lambda:path/2015-03-31/functions/",
+                Object {
+                  "Fn::GetAtt": Array [
+                    "DataPuddleCrmEndpointProvideDataUrlFunc7FD14125",
+                    "Arn",
+                  ],
+                },
+                "/invocations",
+              ],
+            ],
+          },
+        },
+        "ResourceId": Object {
+          "Ref": "DataPuddleCrmEndpointDataPuddleCrnApistoreB30ABA5C",
+        },
+        "RestApiId": Object {
+          "Ref": "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
+        },
+      },
+      "Type": "AWS::ApiGateway::Method",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApistoreGETApiPermissionTestDataPuddleCrmStackDataPuddleCrmEndpointDataPuddleCrnApi4933B53FGETstoreEAC974D1": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "DataPuddleCrmEndpointProvideDataUrlFunc7FD14125",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
+              },
+              "/",
+              Object {
+                "Ref": "DataPuddleCrmEndpointDataPuddleCrnApiDeploymentStageapiDA44BB96",
+              },
+              "/GET/store",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "DataPuddleCrmEndpointDataPuddleCrnApistoreGETApiPermissionTestTestDataPuddleCrmStackDataPuddleCrmEndpointDataPuddleCrnApi4933B53FGETstoreCD110CCC": Object {
+      "Properties": Object {
+        "Action": "lambda:InvokeFunction",
+        "FunctionName": Object {
+          "Fn::GetAtt": Array [
+            "DataPuddleCrmEndpointProvideDataUrlFunc7FD14125",
+            "Arn",
+          ],
+        },
+        "Principal": "apigateway.amazonaws.com",
+        "SourceArn": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "arn:",
+              Object {
+                "Ref": "AWS::Partition",
+              },
+              ":execute-api:",
+              Object {
+                "Ref": "AWS::Region",
+              },
+              ":",
+              Object {
+                "Ref": "AWS::AccountId",
+              },
+              ":",
+              Object {
+                "Ref": "DataPuddleCrmEndpointDataPuddleCrnApi76B998D5",
+              },
+              "/test-invoke-stage/GET/store",
+            ],
+          ],
+        },
+      },
+      "Type": "AWS::Lambda::Permission",
+    },
+    "DataPuddleCrmEndpointProvideDataUrlFunc7FD14125": Object {
+      "DependsOn": Array [
+        "DataPuddleCrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy1D649F03",
+        "DataPuddleCrmEndpointProvideDataUrlFuncServiceRoleC865ED8A",
+      ],
+      "Properties": Object {
+        "Architectures": Array [
+          "arm64",
+        ],
+        "Code": Object {
+          "S3Bucket": Object {
+            "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
+          },
+          "S3Key": "040d8123731f8d638d9c1c1a988b8f49a5385f776f297608cd89a3ec0e9707ca.zip",
+        },
+        "Environment": Object {
+          "Variables": Object {
+            "DATA_BUCKET_NAME": Object {
+              "Ref": "DataBucketE3889A50",
+            },
+          },
+        },
+        "FunctionName": "data-puddle-crm-create-agreement",
+        "Handler": "bootstrap",
+        "MemorySize": 1024,
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "DataPuddleCrmEndpointProvideDataUrlFuncServiceRoleC865ED8A",
+            "Arn",
+          ],
+        },
+        "Runtime": "provided.al2",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "DataPuddleCrmEndpointProvideDataUrlFuncLogRetentionA9E0C733": Object {
+      "Properties": Object {
+        "LogGroupName": Object {
+          "Fn::Join": Array [
+            "",
+            Array [
+              "/aws/lambda/",
+              Object {
+                "Ref": "DataPuddleCrmEndpointProvideDataUrlFunc7FD14125",
+              },
+            ],
+          ],
+        },
+        "RetentionInDays": 90,
+        "ServiceToken": Object {
+          "Fn::GetAtt": Array [
+            "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A",
+            "Arn",
+          ],
+        },
+      },
+      "Type": "Custom::LogRetention",
+    },
+    "DataPuddleCrmEndpointProvideDataUrlFuncServiceRoleC865ED8A": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "lambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "ManagedPolicyArns": Array [
+          Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                "arn:",
+                Object {
+                  "Ref": "AWS::Partition",
+                },
+                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
+              ],
+            ],
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "DataPuddleCrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy1D649F03": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": Array [
+                "s3:GetObject*",
+                "s3:GetBucket*",
+                "s3:List*",
+              ],
+              "Effect": "Allow",
+              "Resource": Array [
+                Object {
+                  "Fn::GetAtt": Array [
+                    "DataBucketE3889A50",
+                    "Arn",
+                  ],
+                },
+                Object {
+                  "Fn::Join": Array [
+                    "",
+                    Array [
+                      Object {
+                        "Fn::GetAtt": Array [
+                          "DataBucketE3889A50",
+                          "Arn",
+                        ],
+                      },
+                      "/*",
+                    ],
+                  ],
+                },
+              ],
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "DataPuddleCrmEndpointProvideDataUrlFuncServiceRoleDefaultPolicy1D649F03",
+        "Roles": Array [
+          Object {
+            "Ref": "DataPuddleCrmEndpointProvideDataUrlFuncServiceRoleC865ED8A",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aFD4BFC8A": Object {
       "DependsOn": Array [
         "LogRetentionaae0aa3c5b4d4f87b02d85b201efdd8aServiceRoleDefaultPolicyADDA7DEB",
@@ -674,7 +661,7 @@ Object {
           "S3Bucket": Object {
             "Fn::Sub": "cdk-hnb659fds-assets-\${AWS::AccountId}-\${AWS::Region}",
           },
-          "S3Key": "5fa1330271b8967d9254ba2d4a07144f8acefe8b77e6d6bba38261373a50d5f8.zip",
+          "S3Key": "f5b6a6d08a8206e67d0b54e2a29abd7e0472d835abc71037de3a93545b5edacc.zip",
         },
         "Handler": "index.handler",
         "Role": Object {
@@ -741,6 +728,19 @@ Object {
         ],
       },
       "Type": "AWS::IAM::Policy",
+    },
+    "TechnicalNotification33611BF6": Object {
+      "Type": "AWS::SNS::Topic",
+    },
+    "TechnicalNotificationtestexamplecom77EDB6E1": Object {
+      "Properties": Object {
+        "Endpoint": "test@example.com",
+        "Protocol": "email",
+        "TopicArn": Object {
+          "Ref": "TechnicalNotification33611BF6",
+        },
+      },
+      "Type": "AWS::SNS::Subscription",
     },
   },
   "Rules": Object {

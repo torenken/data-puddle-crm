@@ -1,9 +1,9 @@
 import { Template } from 'aws-cdk-lib/assertions';
 import { TestApp, TestCrmStack } from './cdk-test-helper';
 
-test('CrmStackSnapshotTest', () => {
+test('DataPuddleCrmStackSnapshotTest', () => {
   const app = new TestApp();
-  const stack = new TestCrmStack(app, 'TestCrmStack');
+  const stack = new TestCrmStack(app, 'TestDataPuddleCrmStack');
 
   const template = Template.fromStack(stack);
 
