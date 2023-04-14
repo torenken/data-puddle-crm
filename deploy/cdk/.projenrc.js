@@ -3,7 +3,7 @@ const { awscdk } = require('projen');
 const appName = 'data-puddle-crm';
 
 const project = new awscdk.AwsCdkTypeScriptApp({
-  cdkVersion: '2.73.0',
+  cdkVersion: '2.74.0',
   defaultReleaseBranch: 'main',
   authorName: 'Thomas Renken',
   repository: `git@github.com:torenken/${appName}.git`,
