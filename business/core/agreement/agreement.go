@@ -16,6 +16,6 @@ func NewCore(storer Storer) *Core {
 	}
 }
 
-func (c Core) Create(ctx context.Context, agreement Agreement) error {
-	return nil //todo
+func (c Core) Create(ctx context.Context, na NewAgreement) (Agreement, error) {
+	return Agreement{}, nil //todo
 }

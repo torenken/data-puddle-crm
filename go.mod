@@ -3,9 +3,12 @@ module github.com/torenken/data-puddle-crm
 go 1.20
 
 require (
-	github.com/aws/aws-lambda-go v1.39.1
+	github.com/aws/aws-lambda-go v1.40.0
 	github.com/aws/aws-sdk-go-v2/config v1.18.21
 	github.com/aws/aws-sdk-go-v2/service/dynamodb v1.19.4
+	github.com/go-playground/locales v0.14.1
+	github.com/go-playground/universal-translator v0.18.1
+	github.com/go-playground/validator/v10 v10.12.0
 	github.com/google/uuid v1.3.0
 	go.uber.org/zap v1.24.0
 )
@@ -25,6 +28,10 @@ require (
 	github.com/aws/aws-sdk-go-v2/service/sts v1.18.9 // indirect
 	github.com/aws/smithy-go v1.13.5 // indirect
 	github.com/jmespath/go-jmespath v0.4.0 // indirect
+	github.com/leodido/go-urn v1.2.3 // indirect
 	go.uber.org/atomic v1.10.0 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
+	golang.org/x/crypto v0.8.0 // indirect
+	golang.org/x/sys v0.7.0 // indirect
+	golang.org/x/text v0.9.0 // indirect
 )
