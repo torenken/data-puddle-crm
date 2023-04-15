@@ -2,10 +2,12 @@ package agreementgrp
 
 import (
 	"context"
+	"net/http"
 
 	"github.com/aws/aws-lambda-go/events"
-	"github.com/torenken/data-puddle-crm/app/handlers/event"
 	"github.com/torenken/data-puddle-crm/business/core/agreement"
+	"github.com/torenken/data-puddle-crm/foundation/event"
+	"github.com/torenken/data-puddle-crm/foundation/web"
 )
 
 type Handlers struct {
@@ -21,7 +23,7 @@ func New(core *agreement.Core) Handlers {
 func (h Handlers) Create(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var app AppNewAgreement
 	if err := event.Decode([]byte(req.Body), &app); err != nil {
-		return event.FailedResponse(err)
+		//todo return ...
 	}
 
 	na, err := toCoreNewAgreement(app)
@@ -33,5 +35,5 @@ func (h Handlers) Create(ctx context.Context, req events.APIGatewayProxyRequest)
 	if err != nil {
 		//todo return ...
 	}
-	return event.Response(agt, 200)
+	return web.Response(agt, http.StatusOK)
 }

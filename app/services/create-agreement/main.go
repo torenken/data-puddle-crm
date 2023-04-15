@@ -25,6 +25,8 @@ func init() {
 }
 
 func handle(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	log := logger.AddRequestId(ctx, log) //maybe create a logging-middleware
+
 	handlers := agreementgrp.New(agreement.NewCore(agreementdb.NewStore(log, db)))
 	return handlers.Create(ctx, req)
 }

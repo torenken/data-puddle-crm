@@ -1,8 +1,6 @@
 package event
 
-import (
-	"encoding/json"
-)
+import "encoding/json"
 
 type validator interface {
 	Validate() error
