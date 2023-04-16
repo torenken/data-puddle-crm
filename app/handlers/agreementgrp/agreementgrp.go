@@ -10,17 +10,21 @@ import (
 	"github.com/torenken/data-puddle-crm/foundation/web"
 )
 
-type Handlers struct {
+type Handler interface {
+	Create(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error)
+}
+
+type AgtHandlers struct {
 	agreement *agreement.Core
 }
 
-func New(core *agreement.Core) Handlers {
-	return Handlers{
+func New(core *agreement.Core) Handler {
+	return AgtHandlers{
 		agreement: core,
 	}
 }
 
-func (h Handlers) Create(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+func (h AgtHandlers) Create(ctx context.Context, req events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
 	var app AppNewAgreement
 	if err := event.Decode([]byte(req.Body), &app); err != nil {
 		//todo return ...
